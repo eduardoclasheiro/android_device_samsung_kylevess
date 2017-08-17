@@ -35,7 +35,7 @@ BOARD_KERNEL_TAGS_OFFSET                    := 0x00000100
 #else
 #    TARGET_KERNEL_CONFIG                    := bcm21664_hawaii_ss_kylevess_rev00_cyanogenmod_defconfig
 #endif
-#TARGET_KERNEL_SOURCE                        := kernel/samsung/kylevess
+#TARGET_KERNEL_SOURCE                        := kernel/samsung/kylevexx
 #TARGET_KERNEL_CUSTOM_TOOLCHAIN              := arm-eabi-4.7
 
 # Kernel Prebuilt
