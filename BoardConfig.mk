@@ -1,5 +1,5 @@
 # Inherit from the proprietary version
--include vendor/samsung/kylevess/BoardConfigVendor.mk
+-include vendor/samsung/kylevexx/BoardConfigVendor.mk
 
 # Platform
 TARGET_ARCH                                 := arm
@@ -21,7 +21,7 @@ TARGET_GLOBAL_CPPFLAGS                      += -mtune=cortex-a9 -mfpu=neon -mflo
 # Assert
 TARGET_OTA_ASSERT_DEVICE                    := kylevess,S7390,GT-S7390,hawaii
 
-# Kernel Config
+# Kernel Definitions
 BOARD_MKBOOTIMG_ARGS                        := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_KERNEL_BASE                           := 0x82000000
 BOARD_KERNEL_PAGESIZE                       := 4096
@@ -29,38 +29,37 @@ BOARD_KERNEL_OFFSET                         := 0x00008000
 BOARD_RAMDISK_OFFSET                        := 0x01000000
 BOARD_KERNEL_TAGS_OFFSET                    := 0x00000100
 
-# Kernel Build From Source
+# Kernel From Source
 #ifeq ($(BUILD_TWRP),true)
-#    TARGET_KERNEL_CONFIG                    := bcm21664_hawaii_ss_kylevess_rev00_recovery_defconfig
+#    TARGET_KERNEL_CONFIG                    := bcm21664_hawaii_ss_kylevexx_rev00_recovery_defconfig
 #else
-#    TARGET_KERNEL_CONFIG                    := bcm21664_hawaii_ss_kylevess_rev00_cyanogenmod_defconfig
+#    TARGET_KERNEL_CONFIG                    := bcm21664_hawaii_ss_kyleve_rev00_cyanogenmod_defconfig
 #endif
 #TARGET_KERNEL_SOURCE                        := kernel/samsung/kylevexx
 #TARGET_KERNEL_CUSTOM_TOOLCHAIN              := arm-eabi-4.7
 
 # Kernel Prebuilt
-TARGET_PREBUILT_KERNEL := device/samsung/kylevess/kernel/zImage
+TARGET_PREBUILT_KERNEL                      := device/samsung/kylevess/kernel/zImage
 PRODUCT_COPY_FILES += \
-	$(TARGET_PREBUILT_KERNEL):kernel
-# Kernel-Modules
-PRODUCT_COPY_FILES += \
-    device/samsung/kylevess/kernel/modules/ansi_cprng.ko:system/lib/modules/ansi_cprng.ko \
-    device/samsung/kylevess/kernel/modules/gator.ko:system/lib/modules/gator.ko \
-    device/samsung/kylevess/kernel/modules/dhd.ko:system/lib/modules/dhd.ko
-
+	device/samsung/kylevess/kernel/modules/ansi_cprng.ko:system/lib/modules/ansi_cprng.ko \
+	device/samsung/kylevess/kernel/modules/gator.ko:system/lib/modules/gator.ko \
+	device/samsung/kylevess/kernel/modules/dhd.ko:system/lib/modules/dhd.ko \
 
 # Partition size
 BOARD_BOOTIMAGE_PARTITION_SIZE              := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE          := 8388608
-BOARD_SYSTEMIMAGE_PARTITION_SIZE            := 907096000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE          := 16777216 # 8388608 Double size to build otapackage
+BOARD_SYSTEMIMAGE_PARTITION_SIZE            := 943718400
 BOARD_SYSTEMIMAGE_JOURNAL_SIZE              := 0
+
+# Dex-preopt
+WITH_DEXPREOPT := true
 
 # Actual size is 2373976064.
 # Reduced by 16384 to fix device encryption.
-BOARD_USERDATAIMAGE_PARTITION_SIZE          := 2638217216
+#BOARD_USERDATAIMAGE_PARTITION_SIZE          := 2638217216
 
-BOARD_CACHEIMAGE_PARTITION_SIZE             := 209715200
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE           := ext4
+#BOARD_CACHEIMAGE_PARTITION_SIZE             := 3276800
+#BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE           := ext4
 BOARD_FLASH_BLOCK_SIZE                      := 262144
 
 # Bluetooth
@@ -134,15 +133,15 @@ BOARD_HAL_STATIC_LIBRARIES                  := libhealthd.hawaii
 # RIL
 BOARD_RIL_CLASS                             := ../../../device/samsung/kylevess/ril/
 
-#No Recovery for now
-TARGET_NO_RECOVERY := true
+# No Recovery
+#TARGET_NO_RECOVERY                          := true
 
 # Recovery
 # Compile with BUILD_TWRP=true when build TWRP recovery
 ifeq ($(BUILD_TWRP),true)
-    TARGET_RECOVERY_FSTAB                   := device/samsung/kylevess/kernel/ramdisk/twrp.fstab.hawaii_ss_kylevess
+    TARGET_RECOVERY_FSTAB                   := device/samsung/kylevess/rootdir/twrp.fstab.hawaii_ss_kylevess
 else
-    TARGET_RECOVERY_FSTAB                   := device/samsung/kylevess/kernel/ramdisk/fstab.hawaii_ss_kylevess
+    TARGET_RECOVERY_FSTAB                   := device/samsung/kylevess/rootdir/fstab.hawaii_ss_kylevess
 endif
 TARGET_USE_CUSTOM_LUN_FILE_PATH             := /sys/class/android_usb/android0/f_mass_storage/lun/file
 BOARD_HAS_NO_SELECT_BUTTON                  := true

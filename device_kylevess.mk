@@ -1,23 +1,22 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
-$(call inherit-product-if-exists, vendor/samsung/kylevess/kylevess-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/kylevexx/kylevexx-common-vendor.mk)
 
 PRODUCT_LOCALES += hdpi
-PRODUCT_AAPT_CONFIG := hdpi
+PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 DEVICE_PACKAGE_OVERLAYS += device/samsung/kylevess/overlay
 
 # Init files
 PRODUCT_COPY_FILES += \
-	device/samsung/kylevess/kernel/ramdisk/fstab.hawaii_ss_kylevess:root/fstab.hawaii_ss_kylevess \
-	device/samsung/kylevess/kernel/ramdisk/init.rc:root/init.rc \
-	device/samsung/kylevess/kernel/ramdisk/init.hawaii_ss_kylevess.rc:root/init.hawaii_ss_kylevess.rc \
-	device/samsung/kylevess/kernel/ramdisk/init.bcm2166x.usb.rc:root/init.bcm2166x.usb.rc \
-	device/samsung/kylevess/kernel/ramdisk/init.log.rc:root/init.log.rc \
-	device/samsung/kylevess/kernel/ramdisk/charger:root/charger \
-	device/samsung/kylevess/kernel/ramdisk/ueventd.hawaii_ss_kylevess.rc:root/ueventd.hawaii_ss_kylevess.rc
-	
+    device/samsung/kylevess/rootdir/ueventd.hawaii_ss_kylevess.rc:root/ueventd.hawaii_ss_kylevess.rc \
+    device/samsung/kylevess/rootdir/init.hawaii_ss_kylevess.rc:root/init.hawaii_ss_kylevess.rc \
+    device/samsung/kylevess/rootdir/fstab.hawaii_ss_kylevess:root/fstab.hawaii_ss_kylevess \
+    device/samsung/kylevess/rootdir/init.bcm2166x.usb.rc:root/init.bcm2166x.usb.rc \
+    device/samsung/kylevess/rootdir/init.log.rc:root/init.log.rc \
+    device/samsung/kylevess/rootdir/init.rc:root/init.rc
+
 # Google's Software Decoder.
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
@@ -107,6 +106,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungBCMRIL \
     persist.radio.multisim.config=none \
     ro.multisim.simslotcount=1 \
+    cm.updater.uri=http://ota.sandpox.org/api \
     ro.telephony.call_ring.multiple=0 \
     camera2.portability.force_api=1 \
     ro.telephony.call_ring=0
@@ -140,6 +140,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 # Dalvik heap config
 include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
+
+# Texture config.
+include frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/config/config-bcm.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
